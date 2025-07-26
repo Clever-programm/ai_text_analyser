@@ -1,11 +1,17 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
-from pydantic import BaseModel
 from typing import Optional
+
+from fastapi import FastAPI, UploadFile, HTTPException
+from pydantic import BaseModel
+
+from agents import analyse_text
 
 
 class TextFile(BaseModel):
     filename: Optional[str] = None
     words_count: Optional[int] = None
+    theme: Optional[str] = None
+    language: Optional[str] = None
+
 
 
 app = FastAPI()
@@ -39,5 +45,6 @@ async def handle_txt(file: UploadFile):
     res = TextFile()
     res.filename = file.filename
     res.words_count = len(text.split())
+    res.theme, res.language = analyse_text(text)
 
     return res
