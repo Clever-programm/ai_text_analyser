@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: text_analyser
+    ports:
+      - "8000:8000"
+    restart: always
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - .:/app
